@@ -12,7 +12,7 @@ Building this wasn't just about coding; it was a crash course in how LLMs actual
 
 ###What did we build:
 
-* **Disha Darshak AI is a comprehensive career guidance platform designed to democratize access to professional coaching. It leverages advanced Generative AI (Google Gemini Models) to provide end-to-end career support—from self-discovery and skill roadmapping to resume creation, optimisation, and interview preparation. The platform specifically targets students and early professionals (particularly in the Indian context, based on localised content and naming conventions) who lack access to expensive career counselors
+**Ascend AI** is a comprehensive career guidance platform designed to democratize access to professional coaching. It leverages advanced Generative AI (Google Gemini Models) to provide end-to-end career support—from self-discovery and skill roadmapping to resume creation, optimisation, and interview preparation. The platform specifically targets students and early professionals (particularly in the Indian context, based on localised content and naming conventions) who lack access to expensive career counselors
 
 1.  **TorchMyResume (Resume Analysis):**
     *   **Rank Mode:** Scores the resume (0-100) against a specific job role, identifying strengths, weaknesses, and missing keywords.
