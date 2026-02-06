@@ -36,7 +36,7 @@ Building this wasn't just about coding; it was a crash course in how LLMs actual
 
 ###  How did We Built It:
 We treated this like a proper production app, not just a weekend hack.
-*   **The Tech Stack:
+#### **The Tech Stack:**
 
 ### **1. Frontend Framework & Language**
 *   **Framework:** **Next.js 14+** (App Router architecture used in `src/app`).
