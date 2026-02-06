@@ -10,7 +10,7 @@ Building this wasn't just about coding; it was a crash course in how LLMs actual
 *   **Latency is the Enemy:** For the Mock Interview feature, I realised that even a 3-second delay feels awkward. I learned a lot about optimising API calls and managing asynchronous states so the AI replies fast enough to keep the conversation flowing.
 *   **State Management Nightmares:** Building the *CV Forge* (where the AI edits your resume while you watch) taught me *a lot* about React Context and keeping the UI in sync with the backend.
 
-###What did we build:
+### What did we build:
 
 **Ascend AI** is a comprehensive career guidance platform designed to democratize access to professional coaching. It leverages advanced Generative AI (Google Gemini Models) to provide end-to-end career support—from self-discovery and skill roadmapping to resume creation, optimisation, and interview preparation. The platform specifically targets students and early professionals (particularly in the Indian context, based on localised content and naming conventions) who lack access to expensive career counselors
 
