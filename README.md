@@ -213,13 +213,3 @@ This project has a strong foundation with many possibilities for future expansio
 
 Distributed under the MIT License. See `LICENSE` for more information.
 
----
-
-## 📬 Team - CIPHER AGENTS
-
-1. Himanshu Bansal - [GitHub](https://github.com/thehimanshubansal)
-2. Prasoon Sharma - [GitHub](https://github.com/Prof-chaos-5)
-3. Sourav - [GitHub](https://github.com/Souraveng)
-4. Swapn - - [GitHub](https://github.com/Swapn-Kumar)
-
-📃 Project Link: [https://github.com/thehimanshubansal/Disha-Darshak-AI](https://github.com/thehimanshubansal/Disha-Darshak-AI)
