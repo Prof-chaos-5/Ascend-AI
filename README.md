@@ -1,84 +1,225 @@
-###  Our Inspiration:
-Honestly, the idea came from seeing my own friends and seniors struggle during placement season. In our college (and so many others in Tier-2/Tier-3 cities), we have the coding skills, but we mess up because we don't have the right guidance.
+# Nexora 
 
-We saw so many talented batchmates get rejected by ATS software just because their resume format was wrong, or freeze up during HR rounds because they never practised speaking in English. Career counsellors are super expensive, and most of us just rely on random YouTube videos. We wanted to build something that could be a "Digital Senior" for everyone—a personalised compass (*Disha Darshak*) that levels the playing field. If we have GenAI now, why should any student feel lost about their career?
+### Your AI-Powered Career Co-pilot
 
-### What We've Learned:
-Building this wasn't just about coding; it was a crash course in how LLMs actually work in production.
-*   **Prompt Engineering is Harder than it Looks:** I learned that you can't just treat Gemini like ChatGPT. I had to write specific "system instructions" to make the AI act like a strict recruiter for the "Roast" feature versus a helpful mentor for the "Roadmap" feature.
-*   **Handling Files with AI:** I learned how to pass PDF binaries directly to Gemini Pro. Before this, I thought we had to use Python libraries to extract text first (which always broke formatting), but Gemini can actually "read" the document structure, which was a game-changer.
-*   **Latency is the Enemy:** For the Mock Interview feature, I realised that even a 3-second delay feels awkward. I learned a lot about optimising API calls and managing asynchronous states so the AI replies fast enough to keep the conversation flowing.
-*   **State Management Nightmares:** Building the *CV Forge* (where the AI edits your resume while you watch) taught me *a lot* about React Context and keeping the UI in sync with the backend.
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![MVP Link](https://img.shields.io/badge/MVP-Live-green)](https://test-disha--disha-darshak.asia-southeast1.hosted.app/)
 
-### What did we build:
+**Nexora** is a comprehensive, AI-driven web application designed to guide students and early-career professionals through the complexities of career planning. It transforms overwhelming choices into a clear, personalized, and actionable journey, leveraging the power of Google's Vertex AI to provide expert-level guidance at scale.
 
-**Ascend AI** is a comprehensive career guidance platform designed to democratize access to professional coaching. It leverages advanced Generative AI (Google Gemini Models) to provide end-to-end career support—from self-discovery and skill roadmapping to resume creation, optimisation, and interview preparation. The platform specifically targets students and early professionals (particularly in the Indian context, based on localised content and naming conventions) who lack access to expensive career counselors
-
-1.  **TorchMyResume (Resume Analysis):**
-    *   **Rank Mode:** Scores the resume (0-100) against a specific job role, identifying strengths, weaknesses, and missing keywords.
-    *   **Roast Mode:** A humorous yet insightful critique of the resume to highlight clichés and errors.
-    *   **Tech:** Uses Gemini Pro to analyse PDF binaries directly.
-
-2.  **CV Forge (Resume Builder):**
-    *   **PDF Import:** Extracts text from existing multi-page PDFs using OCR capabilities.
-    *   **Agentic Editor:** A chat interface where users tell the AI ("Make this bullet point punchier," "Tailor this for a Google job") and the AI rewrites the Markdown in real-time.
-    *   **Templates:** Exports to "Classic Corporate," "Minimalist Pro," or "Tech Modern" PDF styles.
-
-3.  **Mock Interview Simulator:**
-    *   **Voice Interaction:** Uses Browser Speech Recognition for input and Google Cloud Text-to-Speech for realistic AI audio output.
-    *   **Context Aware:** Generates questions based on the user's uploaded resume, target role, and chosen difficulty (Easy/Medium/Hard).
-    *   **Feedback Report:** Provides a structured evaluation JSON covering soft skills, answer quality, and ideal answers after the session.
-
-4.  **Skill-set Finder (Path Finder):**
-    *   **Assessment:** A 15-question quiz covering logic, creativity, work style, and interests.
-    *   **Roadmap Generator:** Creates a detailed, step-by-step timeline (e.g., "Months 0-3: Foundation") with specific resources and projects to build.
+![Nexora Project Banner](https://placehold.co/1200x600/1e1e2e/7f5af0?text=Nexora)
 
 
-###  How did We Built It:
-We treated this like a proper production app, not just a weekend hack.
-#### **The Tech Stack:**
+---
 
-### **1. Frontend Framework & Language**
-*   **Framework:** **Next.js 14+** (App Router architecture used in `src/app`).
-*   **Language:** **TypeScript** (Strict typing used throughout `.ts` and `.tsx` files).
-*   **Library:** **React** (Server and Client Components).
+## 📍 Table of Contents
 
-### **2. UI & Styling**
-*   **Styling Engine:** **Tailwind CSS** (configured in `tailwind.config.ts` and `globals.css`).
-*   **Component Library:** **shadcn/ui** (evidenced by the structure in `src/components/ui/`, utilizing Radix UI primitives).
-*   **Icons:** **Lucide React**.
-*   **Animations:** **Framer Motion** (used for page transitions, twinkling stars, and UI interactions).
-*   **Data Visualization:** **Recharts** (used in `job-trends-chart.tsx`).
-*   **Fonts:** **Inter** and **Space Grotesk** (via `next/font/google`).
+- [The Problem We Solve](#-the-problem-we-solve)
+- [Key Features](#-key-features)
+- [Live Demo](#-live-demo)
+- [Screenshots](#-screenshots)
+- [Technology Stack](#-technology-stack)
+- [🧠 AI & Genkit Integration](#-ai--genkit-integration)
+- [Getting Started](#-getting-started)
+  - [Prerequisites](#prerequisites)
+  - [Local Setup](#local-setup)
+- [Project Structure](#-project-structure)
+- [Future Roadmap](#-future-roadmap)
+- [License](#-license)
+- [Contact](#-contact)
 
-### **3. Backend & Database (Serverless Architecture)**
-*   **Backend Logic:** **Next.js Server Actions** (`'use server'` directives in `src/ai/flows/*` handle API calls securely).
-*   **Database:** **Firebase Realtime Database** (used for storing user profiles, chat history, and evaluations; distinct from Firestore).
-*   **Authentication:** **Firebase Authentication** (Email/Password and Google Sign-In).
+---
 
-### **4. Artificial Intelligence (The Core)**
-*   **LLM Provider:** **Google Gemini** (via `@google/genai` SDK).
-    *   **Flash Model (`gemini-3-flash-preview`):** Used for low-latency tasks like chat interactions, skill extraction, and JSON parsing.
-    *   **Pro Model (`gemini-3-pro-preview`):** Used for complex reasoning, long-context tasks, and multimodal inputs (PDF analysis).
-*   **Text-to-Speech:** **Google Cloud Text-to-Speech API** (via `@google-cloud/text-to-speech`).
-*   **Speech-to-Text:** **Web Speech API** (Native browser `window.SpeechRecognition` used in `voice-interview-ui.tsx`).
-*   **Agentic Framework:** Custom implementation using **TypeScript functions** as flows (Shimmed Genkit-style architecture in `src/ai/genkit.ts`).
+## 🧩 The Problem We Solve
 
-### **5. Utilities & Libraries**
-*   **Validation:** **Zod** (Used for defining AI output schemas and form validation).
-*   **Forms:** **React Hook Form** + **Hookform Resolvers**.
-*   **PDF Handling:**
-    *   **jsPDF** & **html2canvas**: Used in `cv-forge.tsx` to generate PDF resumes from the DOM.
-*   **External Data:**
-    *   **GNews API**: Fetches live career news in `src/app/api/news`.
-    *   **Google Looker Studio**: Embedded iframe for job market visualization.
+Navigating the early stages of a career is often a confusing and stressful experience. Young professionals face a flood of information, unclear career paths, and immense pressure to make the "right" decisions. Nexora addresses these pain points by providing a centralized platform that offers:
 
-### **6. Deployment & Environment**
-*   **Environment Management:** **dotenv** (for loading API keys).
-*   **Hosting Configuration:** `apphosting.yaml` and `firebase.json` suggest deployment compatibility with **Firebase App Hosting**.
+-   **Clarity over Confusion:** Replacing guesswork with data-driven, personalized recommendations.
+-   **Personalization:** Using Generative AI to deliver guidance tailored to each user's unique profile.
+-   **Confidence Building:** Offering tools to practice and prepare for real-world challenges like interviews.
+-   **Actionable Guidance:** Moving beyond simple advice to provide structured, step-by-step roadmaps.
 
-### The Challenges We Faced:
-*   **The "Hallucination" Problem:** At first, the roadmap generator would suggest courses that didn't exist or were 5 years old. I had to spend a lot of time tweaking the prompts to ground the AI and make it stick to general, verifiable topics.
-*   **PDF Parsing was a Headache:** Resumes come in weird formats—two columns, icons, tables. The AI used to get confused between the company name and the job title. We had to switch to Gemini’s vision capabilities to fix this.
-*   **Voice Loops:** The funniest (and most annoying) bug was during the mock interview—the mic would pick up the AI’s voice, send it back to the AI, and it would start talking to itself! I had to write some strict logic in the frontend to mute the mic the second the AI starts speaking.
-*   **Token Limits:** When users uploaded huge 4-page resumes, we hit API limits. I had to write a summarizer function to shrink the text down before sending it to the resume editor.
+---
+
+## ✨ Key Features
+
+-   **📝 AI Skill-set Finder:** A multi-step assessment that analyzes a user's skills and interests to recommend the top 3 career paths. It then generates a detailed, personalized roadmap for the user's chosen role, including skills to develop, learning resources, and project ideas.
+
+-   **🔥 TorchMyResume (Rank & Roast):**
+    -   **Rank:** Upload a resume and get an instant, AI-generated score on its effectiveness for a specific job role, complete with strengths, weaknesses, and missing keywords.
+    -   **Roast:** Get brutally honest, humorous, and surprisingly insightful feedback to make your resume unforgettable.
+
+-   **🤖 AI Mock Interview:** A realistic voice-enabled interview simulation tailored to a specific job role and difficulty level. After the session, the user receives a comprehensive evaluation of their performance, including a soft-skill score and detailed feedback.
+
+-   **💬 AI Career Advisor Chat:** A context-aware chatbot that uses the user's saved resume and profile data to provide personalized advice on demand.
+
+-   **📊 Live Job Trends:** Fetches and displays real-time job market data using the Adzuna API, helping users understand which career fields are currently in high demand.
+
+-   **👥 Community Platform:** A dedicated social space for users to create posts, share professional insights, follow peers, and build a supportive network.
+
+-   **🎙️ Disha Talks:** An curated content hub featuring inspirational articles and mock podcasts (success stories, expert interviews) on career growth and industry trends.
+
+-   **👤 Comprehensive User Profile:** A central dashboard that stores a user's personal details, chosen career path, and a complete history of all their assessments, resume reviews, and mock interviews, creating a persistent record of their career journey.
+
+---
+
+## 🌐 Live Demo
+
+Check out the live, deployed version of the application here:
+**[Nexora](https://nexora--nexora.us-central1.hosted.app/)**
+
+---
+
+## 🛠️ Technology Stack
+
+This project is built with a modern, scalable, and type-safe technology stack.
+
+-   **Frontend:**
+    -   **Framework:** [Next.js](https://nextjs.org/) 14 (with App Router)
+    -   **Language:** [TypeScript](https://www.typescriptlang.org/)
+    -   **Styling:** [Tailwind CSS](https://tailwindcss.com/) & [Shadcn/UI](https://ui.shadcn.com/)
+    -   **State Management:** React Context API
+    -   **Animation:** [Framer Motion](https://www.framer.com/motion/)
+
+-   **Backend & AI Integration:**
+    -   **AI Framework:** [Genkit (Google's Open Source Framework)](https://firebase.google.com/docs/genkit)
+    -   **Generative AI Model:** [Google Gemini 2.5 Pro, 2.5 Flash, Generative AI TTS](https://deepmind.google/technologies/gemini/)
+    -   **Server Environment:** Node.js
+    -   **API:** Next.js API Routes
+
+-   **Database & Authentication:**
+    -   **Database:** [Firebase Realtime Database](https://firebase.google.com/docs/database) (for user profiles, chat history, and evaluation results)
+    -   **Authentication:** [Firebase Authentication](https://firebase.google.com/docs/auth)
+
+-   **Deployment:**
+    -   **Hosting:** [Firebase Hosting](https://firebase.google.com/docs/hosting)
+
+---
+
+## 🧠 AI & Genkit Integration
+
+The core intelligence of this application is powered by **Genkit**, which orchestrates calls to the **Google Gemini Pro** model. Each AI feature is implemented as a distinct, type-safe "flow."
+
+-   **`path-finder.ts`:**
+    -   `geminiExplainFull`: Analyzes quiz answers to generate the initial top 3 detailed career recommendations.
+    -   `geminiGenerateRoadmap`: Takes a user's chosen role and profile to create the comprehensive, step-by-step career roadmap.
+
+-   **`rank-resume.ts` & `roast-resume.ts`:**
+    -   These flows utilize Gemini's multi-modal capabilities to process an uploaded PDF resume. They analyze the document's content against a target job role to generate structured JSON feedback for ranking and roasting.
+
+-   **`mock-interview-flow.ts`:**
+    -   Manages a multi-turn conversational interview. It maintains the history of the conversation and uses the user's resume context to ask relevant questions. At the end of the interview, it generates a final, structured JSON evaluation of the user's performance.
+
+-   **`career-advice-chatbot.ts`:**
+    -   A straightforward flow that takes a user's question and resume text to provide a context-aware, personalized response.
+
+---
+
+##  Getting Started
+
+To get a local copy up and running, follow these simple steps.
+
+### Prerequisites
+
+-   [Node.js](https://nodejs.org/) (v18 or later)
+-   [Git](https://git-scm.com/)
+-   A Firebase project with Authentication and Realtime Database enabled.
+
+### Local Setup
+
+1.  **Clone the repository:**
+    ```sh
+    git clone https://github.com/thehimanshubansal/Disha-Darshak-AI.git
+    cd Disha-Darshak-AI
+    ```
+
+2.  **Install NPM packages:**
+    ```sh
+    npm install
+    ```
+
+3.  **Set up environment variables:**
+    -   Create a file named `.env` in the root of the project.
+    -   Add the following keys, filling in your own credentials from your Firebase and Adzuna projects.
+    ```env
+    # Firebase Configuration
+    NEXT_PUBLIC_FIREBASE_API_KEY=
+    NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=
+    NEXT_PUBLIC_FIREBASE_PROJECT_ID=
+    NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=
+    NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=
+    NEXT_PUBLIC_FIREBASE_APP_ID=
+    NEXT_PUBLIC_FIREBASE_DATABASE_URL=
+
+    # Adzuna API (for Job Trends)
+    ADZUNA_APP_ID=
+    ADZUNA_APP_KEY=
+
+    # Google Cloud (for local Genkit development)
+    GOOGLE_CLOUD_PROJECT_ID=
+    GOOGLE_CLOUD_LOCATION=
+    ```
+
+4.  **Set up Google Cloud Credentials for Genkit:**
+    -   Create a service account in your Google Cloud project and download the JSON key file.
+    -   Place this file in the root of the project and name it `secret-account-key.json`.
+    -   **Important:** Ensure your `.gitignore` file includes `secret-account-key.json` to prevent committing secrets.
+
+5.  **Run the development server:**
+    ```sh
+    npm run dev
+    ```
+    Open [http://localhost:9002](http://localhost:9002) to view it in the browser.
+
+---
+
+## 📂 Project Structure
+
+The project follows a standard Next.js App Router structure, with a clear separation of concerns.
+
+```
+Disha-Darshak-AI/
+├── src/
+│   ├── ai/                 # All Genkit flows and AI logic
+│   │   ├── flows/          # Individual AI features (ranking interview, etc.)
+│   │   └── prompts/        # Markdown prompts for the AI models
+│   ├── app/                # Next.js App Router pages and API routes
+│   ├── components/         # Reusable React components
+│   │   ├── career-compass/ # Core feature components
+│   │   └── ui/             # Reusable UI elements from Shadcn
+│   ├── contexts/           # Global state management (React Context)
+│   ├── hooks/              # Custom React hooks
+│   ├── lib/                # Utility functions, constants, Firebase config
+│   └── types/              # Global TypeScript types
+├── docs/                   # Project documentation (e.g., blueprint.md)
+├── public/                 # Static assets
+└── ...                     # Config files (next.config.js, tailwind.config.ts, etc.)
+```
+
+---
+
+## 🗺️ Future Roadmap
+
+This project has a strong foundation with many possibilities for future expansion:
+
+-   [ ] **Deeper Profile Analytics:** Create a dedicated analytics page to visualize a user's progress over time based on their saved evaluations.
+-   [ ] **Expanded Community Features:** Implement post creation, following other users, and direct messaging to foster a professional network.
+-   [ ] **Personalized Learning Paths:** Integrate with educational APIs to recommend specific courses based on a user's roadmap.
+-   [ ] **Native Mobile App:** Develop a React Native or Flutter application for a seamless mobile experience.
+
+---
+
+## 📜 License
+
+Distributed under the MIT License. See `LICENSE` for more information.
+
+---
+
+## 📬 Team - CIPHER AGENTS
+
+1. Himanshu Bansal - [GitHub](https://github.com/thehimanshubansal)
+2. Prasoon Sharma - [GitHub](https://github.com/Prof-chaos-5)
+3. Sourav - [GitHub](https://github.com/Souraveng)
+4. Swapn - - [GitHub](https://github.com/Swapn-Kumar)
+
+📃 Project Link: [https://github.com/thehimanshubansal/Disha-Darshak-AI](https://github.com/thehimanshubansal/Disha-Darshak-AI)
