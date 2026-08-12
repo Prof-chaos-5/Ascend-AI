@@ -1,215 +1,288 @@
-# Nexora 
-
-### Your AI-Powered Career Co-pilot
+# Nexora
+### Autonomous Multi-Agent Career Orchestration Platform
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Architecture: Multi-Agent DAG](https://img.shields.io/badge/Architecture-Multi--Agent_DAG-blue)](https://test-disha--disha-darshak.asia-southeast1.hosted.app/)
 [![MVP Link](https://img.shields.io/badge/MVP-Live-green)](https://test-disha--disha-darshak.asia-southeast1.hosted.app/)
+[![Node](https://img.shields.io/badge/Node-%E2%89%A518-brightgreen)](https://nodejs.org/)
+[![Next.js](https://img.shields.io/badge/Next.js-14-black)](https://nextjs.org/)
 
-**Nexora** is a comprehensive, AI-driven web application designed to guide students and early-career professionals through the complexities of career planning. It transforms overwhelming choices into a clear, personalized, and actionable journey, leveraging the power of Google's Vertex AI to provide expert-level guidance at scale.
+**Nexora** is an autonomous, multi-agent AI career co-pilot built on Next.js 14, Google's Genkit, and Gemini 1.5 Pro. Unlike traditional platforms that treat AI tools as isolated chatbots, Nexora implements an **interconnected agentic workflow**. Agents share structured state, pass context across a unified user memory graph, and execute closed-loop self-correction pipelines to autonomously optimize resumes, simulate interviews, and guide career roadmaps.
 
-![Nexora Project Banner](https://placehold.co/1200x600/1e1e2e/7f5af0?text=Nexora)
-
+![Nexora Project Banner](https://placehold.co/1200x600/1e1e2e/7f5af0?text=Nexora+-+Multi-Agent+Ecosystem)
 
 ---
 
 ## 📍 Table of Contents
 
-- [The Problem We Solve](#-the-problem-we-solve)
-- [Key Features](#-key-features)
+- [The Agentic Paradigm](#-the-agentic-paradigm-why-traditional-career-ai-fails)
+- [Multi-Agent Architecture & Workflows](#-multi-agent-architecture--workflows)
+- [Core Autonomous Agents](#-core-autonomous-agents)
+- [✨ Key Features](#-key-features)
 - [Live Demo](#-live-demo)
-- [Screenshots](#-screenshots)
 - [Technology Stack](#-technology-stack)
-- [🧠 AI & Genkit Integration](#-ai--genkit-integration)
+- [🧠 Genkit Multi-Agent Orchestration](#-genkit-multi-agent-orchestration)
 - [Getting Started](#-getting-started)
   - [Prerequisites](#prerequisites)
   - [Local Setup](#local-setup)
 - [Project Structure](#-project-structure)
 - [Future Roadmap](#-future-roadmap)
+- [Contributing](#-contributing)
 - [License](#-license)
-- [Contact](#-contact)
 
 ---
 
-## 🧩 The Problem We Solve
+## 🧩 The Agentic Paradigm: Why Traditional Career AI Fails
 
-Navigating the early stages of a career is often a confusing and stressful experience. Young professionals face a flood of information, unclear career paths, and immense pressure to make the "right" decisions. Nexora addresses these pain points by providing a centralized platform that offers:
+Most AI career platforms operate as stateless, disconnected wrappers around LLMs. A user checks their resume in one tab, practices an interview in another, and asks a chatbot questions in a third — with zero memory or context shared between them.
 
--   **Clarity over Confusion:** Replacing guesswork with data-driven, personalized recommendations.
--   **Personalization:** Using Generative AI to deliver guidance tailored to each user's unique profile.
--   **Confidence Building:** Offering tools to practice and prepare for real-world challenges like interviews.
--   **Actionable Guidance:** Moving beyond simple advice to provide structured, step-by-step roadmaps.
+**Nexora solves this through Shared Agentic Memory and Autonomous Pipelines:**
+- **Closed-Loop Optimization:** Diagnostics from one agent autonomously trigger remediation by another (e.g., resume gaps automatically trigger resume rewrites).
+- **Stateful Memory Graph:** Interview failures, ATS weaknesses, and skill gaps are persisted to Firebase and injected into the system prompts of downstream agents.
+- **Deterministic Agent Handoffs:** Agents communicate via strict, Zod-validated JSON schemas, preventing context bleed and hallucination across multi-step DAGs.
+
+---
+
+## 🤖 Multi-Agent Architecture & Workflows
+
+Nexora orchestrates specialized Genkit agents that communicate through a centralized Firebase User Context Graph.
+
+```mermaid
+graph TD
+    subgraph Diagnostic & Remediation Loop
+        A[📄 User Uploads Resume] --> B(🔥 TorchMyResume Agent)
+        B -- Outputs ATS Gaps & Missing Keywords JSON --> C(🛠️ ForgeMyResume Agent)
+        C -- Autonomously Rewrites & Optimizes --> D[✨ ATS-Optimized Resume >85%]
+        D -- Re-evaluates --> B
+    end
+
+    subgraph Simulation & Memory Orchestration
+        D --> E(🎙️ AI Mock Interview Agent)
+        E -- Tests User on Weak Resume Bullets --> F[📊 Interview Evaluation JSON]
+    end
+
+    subgraph Central Orchestrator
+        B -- Saves ATS Schema --> G[(🧠 Firebase Shared Memory Graph)]
+        C -- Saves Optimized History --> G
+        F -- Saves Failed Interview Topics --> G
+        G -- Injects Context & Gaps --> H(💬 Career Co-Pilot Chat Agent)
+        H -- Conducts Personalized Follow-up Coaching --> User
+    end
+```
+
+### Key Agentic Workflows
+
+#### 1. The Autonomous ATS Optimization Loop (`TorchMyResume` ➡️ `ForgeMyResume`)
+Instead of just telling the user what is wrong, Nexora executes a closed-loop diagnostic-to-remediation pipeline:
+1. **Diagnostic Agent (`TorchMyResume`):** Analyzes the uploaded resume against a target job description. It outputs a strictly typed Zod schema containing `ats_score`, `missing_keywords`, and `weak_bullet_points`.
+2. **Remediation Agent (`ForgeMyResume`):** Automatically ingests the JSON payload from `TorchMyResume`. It rewrites the weak bullet points using the STAR (Situation, Task, Action, Result) method, injects the missing domain keywords natively, and re-renders an optimized resume designed to score **>85% on standard ATS parsers**.
+
+#### 2. Cross-Agent Conversational Coaching (`Mock Interview` + `TorchMyResume` ➡️ `AI Chat`)
+Nexora's chatbot is not a generic LLM; it is a context-aware **Orchestrator Agent**:
+- When a user finishes an **AI Mock Interview**, the Simulation Agent outputs a performance JSON highlighting areas of failure (e.g., *"Struggled with system design scalability questions"*).
+- When the user opens the **AI Career Co-Pilot Chat**, the Orchestrator pulls the latest state from both `TorchMyResume` (missing skills) and the `Mock Interview` (communication/technical gaps).
+- **The Result:** The Chat Agent immediately opens the conversation proactively, connecting the dots between an interview weak spot and a resume keyword gap, and offering a targeted follow-up exercise to fix both at once.
+
+---
+
+## ✨ Core Autonomous Agents
+
+- **🔥 TorchMyResume (Diagnostic Agent):**
+  - Uses Gemini 1.5 Pro multimodal document processing to parse PDFs.
+  - Enforces a deterministic JSON schema to output an ATS Match Score, Keyword Density Analysis, and actionable structural critiques.
+
+- **🛠️ ForgeMyResume (Remediation Agent):**
+  - Takes the diagnostic schema from `TorchMyResume` as an input prompt.
+  - Autonomously refactors bullet points, enhances action verbs, and aligns formatting with target industry standards.
+
+- **🎙️ AI Mock Interview (Simulation Agent):**
+  - A stateful, multi-turn voice-enabled interview agent powered by Gemini Generative AI TTS.
+  - Dynamically adapts its questioning strategy based on the candidate's real-time answers and the weaknesses flagged in their active resume.
+
+- **💬 AI Career Advisor Chat (Orchestrator Agent):**
+  - Acts as the central router. Has read-access to the user's entire assessment history, interview scores, and roadmap progress.
+  - Provides continuous, context-aware coaching without requiring the user to re-explain their background.
+
+- **📝 AI Skill-set & Career Path Finder:**
+  - A multi-step reasoning agent that maps user skills against real-time market demands (via Adzuna API) to generate personalized, multi-month career roadmaps.
 
 ---
 
 ## ✨ Key Features
 
--   **📝 AI Skill-set Finder:** A multi-step assessment that analyzes a user's skills and interests to recommend the top 3 career paths. It then generates a detailed, personalized roadmap for the user's chosen role, including skills to develop, learning resources, and project ideas.
-
--   **🔥 TorchMyResume (Rank & Roast):**
-    -   **Rank:** Upload a resume and get an instant, AI-generated score on its effectiveness for a specific job role, complete with strengths, weaknesses, and missing keywords.
-    -   **Roast:** Get brutally honest, humorous, and surprisingly insightful feedback to make your resume unforgettable.
-
--   **🤖 AI Mock Interview:** A realistic voice-enabled interview simulation tailored to a specific job role and difficulty level. After the session, the user receives a comprehensive evaluation of their performance, including a soft-skill score and detailed feedback.
-
--   **💬 AI Career Advisor Chat:** A context-aware chatbot that uses the user's saved resume and profile data to provide personalized advice on demand.
-
--   **📊 Live Job Trends:** Fetches and displays real-time job market data using the Adzuna API, helping users understand which career fields are currently in high demand.
-
--   **👥 Community Platform:** A dedicated social space for users to create posts, share professional insights, follow peers, and build a supportive network.
-
--   **🎙️ Disha Talks:** An curated content hub featuring inspirational articles and mock podcasts (success stories, expert interviews) on career growth and industry trends.
-
--   **👤 Comprehensive User Profile:** A central dashboard that stores a user's personal details, chosen career path, and a complete history of all their assessments, resume reviews, and mock interviews, creating a persistent record of their career journey.
+| Feature | What it does |
+|---|---|
+| 📝 **AI Skill-set Finder** | A multi-step assessment that analyzes a user's skills and interests to recommend the top 3 career paths, then generates a detailed, personalized roadmap (skills to develop, learning resources, project ideas) for the chosen role. |
+| 🔥 **TorchMyResume — Rank & Roast** | **Rank:** Upload a resume and get an instant, AI-generated score on its effectiveness for a specific job role, with strengths, weaknesses, and missing keywords. **Roast:** Get brutally honest, humorous, and surprisingly insightful feedback to make your resume unforgettable. |
+| 🤖 **AI Mock Interview** | A realistic, voice-enabled interview simulation tailored to a specific job role and difficulty level. Delivers a post-session evaluation including a soft-skill score and detailed feedback. |
+| 💬 **AI Career Advisor Chat** | A context-aware chatbot with a ✨ **Personalized Mode** that, with a single click, pulls the user's complete profile, skills, and past evaluation results for deeply holistic, tailored guidance. |
+| 📊 **Live Job Market Explorer** | An interactive dashboard backed by a real data pipeline: a Google Apps Script fetches data daily from the Adzuna API into Google Sheets, visualized via an embedded Looker Studio dashboard (top job categories, salary distributions, geographic hotspots, top hiring companies). |
+| 📰 **Trending Career News** | A homepage widget pulling the latest career, job-market, and hiring articles from the GNews API. |
+| 👥 **Community Platform** | A social space for users to create posts, share professional insights, follow peers, and build a supportive network. |
+| 🎙️ **Disha Talks** | A curated content hub of inspirational articles and mock podcasts — success stories, expert interviews — on career growth and industry trends. |
+| 👤 **Comprehensive User Profile** | A central dashboard storing personal details, chosen career path, and a full history of assessments, resume reviews, and mock interviews — a persistent record of the user's career journey. |
 
 ---
 
 ## 🌐 Live Demo
 
 Check out the live, deployed version of the application here:
-**[Nexora](https://nexora--nexora.us-central1.hosted.app/)**
+**[Nexora Live Environment](https://nexora--nexora.us-central1.hosted.app/)**
+*(Note: Cloud backend orchestration is optimized for high-concurrency multi-agent workflows.)*
 
 ---
 
 ## 🛠️ Technology Stack
 
-This project is built with a modern, scalable, and type-safe technology stack.
-
--   **Frontend:**
-    -   **Framework:** [Next.js](https://nextjs.org/) 14 (with App Router)
-    -   **Language:** [TypeScript](https://www.typescriptlang.org/)
-    -   **Styling:** [Tailwind CSS](https://tailwindcss.com/) & [Shadcn/UI](https://ui.shadcn.com/)
-    -   **State Management:** React Context API
-    -   **Animation:** [Framer Motion](https://www.framer.com/motion/)
-
--   **Backend & AI Integration:**
-    -   **AI Framework:** [Genkit (Google's Open Source Framework)](https://firebase.google.com/docs/genkit)
-    -   **Generative AI Model:** [Google Gemini 2.5 Pro, 2.5 Flash, Generative AI TTS](https://deepmind.google/technologies/gemini/)
-    -   **Server Environment:** Node.js
-    -   **API:** Next.js API Routes
-
--   **Database & Authentication:**
-    -   **Database:** [Firebase Realtime Database](https://firebase.google.com/docs/database) (for user profiles, chat history, and evaluation results)
-    -   **Authentication:** [Firebase Authentication](https://firebase.google.com/docs/auth)
-
--   **Deployment:**
-    -   **Hosting:** [Firebase Hosting](https://firebase.google.com/docs/hosting)
+| Layer | Tools |
+|---|---|
+| **Frontend** | [Next.js 14](https://nextjs.org/) (App Router), [TypeScript](https://www.typescriptlang.org/), [Tailwind CSS](https://tailwindcss.com/), [Shadcn/UI](https://ui.shadcn.com/), [Framer Motion](https://www.framer.com/motion/) |
+| **AI & Orchestration** | [Google Genkit](https://firebase.google.com/docs/genkit), Google Gemini 1.5 Pro / Flash, Zod (schema validation) |
+| **Backend & API** | Node.js, Next.js Server Actions / Edge Routes |
+| **Database & State Graph** | [Firebase Realtime Database](https://firebase.google.com/docs/database) (persistent agent memory), [Firebase Auth](https://firebase.google.com/docs/auth) |
+| **Data Pipeline** | Google Apps Script (daily Adzuna fetch) → Google Sheets → Looker Studio |
+| **External APIs** | Adzuna Job Trends API, GNews API |
 
 ---
 
-## 🧠 AI & Genkit Integration
+## 🧠 Genkit Multi-Agent Orchestration
 
-The core intelligence of this application is powered by **Genkit**, which orchestrates calls to the **Google Gemini Pro** model. Each AI feature is implemented as a distinct, type-safe "flow."
+All agents are implemented as strongly-typed **Genkit Flows**, guaranteeing type safety from the LLM output down to the Next.js React components.
 
--   **`path-finder.ts`:**
-    -   `geminiExplainFull`: Analyzes quiz answers to generate the initial top 3 detailed career recommendations.
-    -   `geminiGenerateRoadmap`: Takes a user's chosen role and profile to create the comprehensive, step-by-step career roadmap.
+```typescript
+// Example: Interconnected State Hand-off in Genkit
+import { generateObject } from 'ai';
+import { z } from 'zod';
 
--   **`rank-resume.ts` & `roast-resume.ts`:**
-    -   These flows utilize Gemini's multi-modal capabilities to process an uploaded PDF resume. They analyze the document's content against a target job role to generate structured JSON feedback for ranking and roasting.
+// 1. Diagnostic Schema from TorchMyResume
+const ATSDiagnosticSchema = z.object({
+  ats_score: z.number(),
+  missing_keywords: z.array(z.string()),
+  weak_bullets: z.array(z.string()),
+});
 
--   **`mock-interview-flow.ts`:**
-    -   Manages a multi-turn conversational interview. It maintains the history of the conversation and uses the user's resume context to ask relevant questions. At the end of the interview, it generates a final, structured JSON evaluation of the user's performance.
+// 2. Closed-Loop Remediation Flow (ForgeMyResume)
+export async function forgeResumeFlow(resumeText: string, targetJob: string) {
+  // Step 1: Run Diagnostic Agent
+  const diagnostic = await runTorchMyResume(resumeText, targetJob);
 
--   **`career-advice-chatbot.ts`:**
-    -   A straightforward flow that takes a user's question and resume text to provide a context-aware, personalized response.
+  // Step 2: Pass state into Remediation Agent if score < 85
+  if (diagnostic.ats_score < 85) {
+    const optimizedResume = await generateObject({
+      model: gemini15Pro,
+      schema: ResumeSchema,
+      prompt: `
+        Refactor this resume: ${resumeText}.
+        INJECT MISSING KEYWORDS: ${diagnostic.missing_keywords.join(', ')}.
+        REWRITE THESE WEAK BULLETS: ${diagnostic.weak_bullets.join('; ')}.
+      `,
+    });
+    return optimizedResume;
+  }
+  return resumeText;
+}
+```
 
 ---
 
-##  Getting Started
-
-To get a local copy up and running, follow these simple steps.
+## 🚀 Getting Started
 
 ### Prerequisites
-
--   [Node.js](https://nodejs.org/) (v18 or later)
--   [Git](https://git-scm.com/)
--   A Firebase project with Authentication and Realtime Database enabled.
+- [Node.js](https://nodejs.org/) (v18 or later) & [Git](https://git-scm.com/)
+- A Firebase project with Authentication and Realtime Database enabled.
+- A Google Cloud project with Vertex AI / Gemini API access enabled.
+- (Optional, for full feature parity) Adzuna API credentials and a GNews API key.
 
 ### Local Setup
 
-1.  **Clone the repository:**
-    ```sh
-    git clone https://github.com/thehimanshubansal/Disha-Darshak-AI.git
-    cd Disha-Darshak-AI
-    ```
+1. **Clone the repository:**
+   ```sh
+   git clone https://github.com/thehimanshubansal/Disha-Darshak-AI.git
+   cd Disha-Darshak-AI
+   ```
 
-2.  **Install NPM packages:**
-    ```sh
-    npm install
-    ```
+2. **Install NPM packages:**
+   ```sh
+   npm install
+   ```
 
-3.  **Set up environment variables:**
-    -   Create a file named `.env` in the root of the project.
-    -   Add the following keys, filling in your own credentials from your Firebase and Adzuna projects.
-    ```env
-    # Firebase Configuration
-    NEXT_PUBLIC_FIREBASE_API_KEY=
-    NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=
-    NEXT_PUBLIC_FIREBASE_PROJECT_ID=
-    NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=
-    NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=
-    NEXT_PUBLIC_FIREBASE_APP_ID=
-    NEXT_PUBLIC_FIREBASE_DATABASE_URL=
+3. **Set up environment variables (`.env.local`):**
+   ```env
+   # Firebase Configuration
+   NEXT_PUBLIC_FIREBASE_API_KEY=your_api_key
+   NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=your_project.firebaseapp.com
+   NEXT_PUBLIC_FIREBASE_PROJECT_ID=your_project_id
+   NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=your_project.appspot.com
+   NEXT_PUBLIC_FIREBASE_DATABASE_URL=https://your_project-default-rtdb.firebaseio.com
 
-    # Adzuna API (for Job Trends)
-    ADZUNA_APP_ID=
-    ADZUNA_APP_KEY=
+   # External APIs
+   ADZUNA_APP_ID=your_id
+   ADZUNA_APP_KEY=your_key
+   GNEWS_API_KEY=your_gnews_key
 
-    # Google Cloud (for local Genkit development)
-    GOOGLE_CLOUD_PROJECT_ID=
-    GOOGLE_CLOUD_LOCATION=
-    ```
+   # Google Cloud / Genkit
+   GOOGLE_CLOUD_PROJECT_ID=your_gcp_project
+   GOOGLE_GENAI_API_KEY=your_gemini_key
+   ```
 
-4.  **Set up Google Cloud Credentials for Genkit:**
-    -   Create a service account in your Google Cloud project and download the JSON key file.
-    -   Place this file in the root of the project and name it `secret-account-key.json`.
-    -   **Important:** Ensure your `.gitignore` file includes `secret-account-key.json` to prevent committing secrets.
+4. **Run the development server:**
+   ```sh
+   npm run dev
+   ```
+   Open [http://localhost:3000](http://localhost:3000) to view the multi-agent ecosystem in action.
 
-5.  **Run the development server:**
-    ```sh
-    npm run dev
-    ```
-    Open [http://localhost:9002](http://localhost:9002) to view it in the browser.
+5. **Useful scripts:**
+   ```sh
+   npm run dev      # Start local dev server
+   npm run build    # Production build
+   npm run start    # Serve the production build
+   npm run lint     # Lint the codebase
+   ```
 
 ---
 
 ## 📂 Project Structure
 
-The project follows a standard Next.js App Router structure, with a clear separation of concerns.
-
 ```
 Disha-Darshak-AI/
 ├── src/
-│   ├── ai/                 # All Genkit flows and AI logic
-│   │   ├── flows/          # Individual AI features (ranking interview, etc.)
-│   │   └── prompts/        # Markdown prompts for the AI models
-│   ├── app/                # Next.js App Router pages and API routes
-│   ├── components/         # Reusable React components
-│   │   ├── career-compass/ # Core feature components
-│   │   └── ui/             # Reusable UI elements from Shadcn
-│   ├── contexts/           # Global state management (React Context)
-│   ├── hooks/              # Custom React hooks
-│   ├── lib/                # Utility functions, constants, Firebase config
-│   └── types/              # Global TypeScript types
-├── docs/                   # Project documentation (e.g., blueprint.md)
-├── public/                 # Static assets
-└── ...                     # Config files (next.config.js, tailwind.config.ts, etc.)
+│   ├── ai/
+│   │   ├── flows/          # Genkit Agent Workflows (torch-resume, forge-resume, mock-interview)
+│   │   ├── schemas/        # Zod Schemas for deterministic agent-to-agent communication
+│   │   └── prompts/        # Context-aware system prompts
+│   ├── app/                # Next.js 14 App Router & API Edge Routes
+│   ├── components/
+│   │   ├── career-compass/ # UI components mapped to respective agents
+│   │   └── ui/              # Shadcn Design System
+│   ├── contexts/           # Global Client State & Firebase User Graph Provider
+│   ├── lib/                # Utility classes, DB connectors, Genkit config
+│   └── types/               # Unified TypeScript definitions for agent state
+└── docs/                   # System Architecture & API Blueprint
 ```
 
 ---
 
 ## 🗺️ Future Roadmap
 
-This project has a strong foundation with many possibilities for future expansion:
+- [ ] **Autonomous Job Application Agent:** Enable agents to match the optimized `ForgeMyResume` output directly to Adzuna job postings and generate tailored cover letters autonomously.
+- [ ] **Multi-Agent Debate:** Implement a system where a "Recruiter Agent" and an "Engineering Manager Agent" debate the candidate's mock interview responses to provide more nuanced feedback.
+- [ ] **Advanced Firebase Memory Graph:** Expand the Firebase Realtime Database schema to index long-term conversational state, allowing the Chat Agent to instantly recall historical interview context across months of user interactions without needing complex vector embeddings.
+---
 
--   [ ] **Deeper Profile Analytics:** Create a dedicated analytics page to visualize a user's progress over time based on their saved evaluations.
--   [ ] **Expanded Community Features:** Implement post creation, following other users, and direct messaging to foster a professional network.
--   [ ] **Personalized Learning Paths:** Integrate with educational APIs to recommend specific courses based on a user's roadmap.
--   [ ] **Native Mobile App:** Develop a React Native or Flutter application for a seamless mobile experience.
+## 🤝 Contributing
+
+Contributions are welcome!
+
+1. Fork the repository.
+2. Create a feature branch: `git checkout -b feature/your-feature-name`
+3. Commit your changes: `git commit -m "Add: short description of change"`
+4. Push to the branch: `git push origin feature/your-feature-name`
+5. Open a Pull Request describing the change and, if relevant, which agent/flow it touches.
+
+Please keep agent-to-agent contracts (Zod schemas in `src/ai/schemas/`) backward-compatible where possible, since downstream flows depend on them.
 
 ---
 
 ## 📜 License
 
 Distributed under the MIT License. See `LICENSE` for more information.
-
